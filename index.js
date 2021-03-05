@@ -2,6 +2,7 @@
 const express = require('express')
 const cors = require('cors')
 const app = express()
+const logger = require('./loggerMiddleware')
 
 app.use(cors())
 app.use(express.json())
@@ -10,13 +11,7 @@ app.use(express.json())
   response.writeHead(200, { 'Content-Type': 'application/json' })
   response.end('Hola Mundo todo bien')
 }) */
-app.use((request, response, next) => {
-  console.log(request.method)
-  console.log(request.path)
-  console.log(request.body)
-  console.log('--------AQUI-------------')
-  next()
-})
+app.use(logger)
 
 let notes = [
   {
@@ -89,7 +84,7 @@ app.use((request, response) => {
     error: 'Not found'
   })
 })
-const PORT = 3001
+const PORT = process.env.PORT || 3001
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`)
 })
